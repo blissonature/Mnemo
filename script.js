@@ -1,18 +1,6 @@
 // =========================
-// Mnemo | Room Templates, Anchor Tips, Spatial Labels
+// Mnemo | Room Templates, Anchor Tips, Spatial Labels + Save + Preview Fixes
 // =========================
-function renderGuide() {
-  const guide = document.createElement('div');
-  guide.innerHTML = `
-    <section class="guide">
-      <h2>🧭 Guide: Building a Memory Palace</h2>
-      <p>Each room holds a symbolic theme. Each anchor should be vivid, symbolic, and emotionally resonant.</p>
-      <p>Use placement and color to deepen association. Upload an image or visualize one clearly in your mind.</p>
-    </section>
-    <hr/>
-  `;
-  document.getElementById('activity').appendChild(guide);
-}
 
 window.addEventListener('DOMContentLoaded', () => {
   const activityContainer = document.getElementById('activity');
@@ -26,6 +14,19 @@ window.addEventListener('DOMContentLoaded', () => {
   // Auto-save anytime form updates
   activityContainer.addEventListener('input', savePalaceToLocalStorage);
 });
+
+function renderGuide() {
+  const guide = document.createElement('div');
+  guide.innerHTML = `
+    <section class="guide">
+      <h2>🧭 Guide: Building a Memory Palace</h2>
+      <p>Each room holds a symbolic theme. Each anchor should be vivid, symbolic, and emotionally resonant.</p>
+      <p>Use placement and color to deepen association. Upload an image or visualize one clearly in your mind.</p>
+    </section>
+    <hr/>
+  `;
+  document.getElementById('activity').appendChild(guide);
+}
 
 function addViewToggle() {
   const controls = document.createElement('div');
@@ -66,7 +67,6 @@ function renderViewMode() {
   activityContainer.appendChild(back);
 }
 
-// Add Save button per anchor with Room Template, Tips, Spatial Label
 window.addAnchorToRoom = function (btn) {
   const group = btn.previousElementSibling;
   const index = group.children.length + 1;
@@ -98,7 +98,20 @@ window.addAnchorToRoom = function (btn) {
   group.appendChild(anchor);
 }
 
-// Room Template Select on Room Creation
+function previewImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = input.nextElementSibling;
+    img.src = reader.result;
+    img.style.display = 'block';
+    input.dataset.imageData = reader.result;
+    savePalaceToLocalStorage();
+  };
+  reader.readAsDataURL(file);
+}
+
 function renderFirstRoom() {
   const activityContainer = document.getElementById('activity');
   const section = document.createElement('section');
@@ -119,4 +132,58 @@ function renderFirstRoom() {
     <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
   `;
   activityContainer.appendChild(section);
-} 
+}
+
+function getPalaceData() {
+  const palaceName = document.querySelector('header h1')?.textContent || 'Untitled';
+  const rooms = [...document.querySelectorAll('section')].filter(s => s.querySelector('.room-name')).map(room => {
+    return {
+      name: room.querySelector('.room-name').value,
+      template: room.querySelector('.room-template').value,
+      anchors: [...room.querySelectorAll('.anchor-group .field')].map(anchor => ({
+        name: anchor.querySelector('.anchor-name')?.value || '',
+        meaning: anchor.querySelector('.anchor-meaning')?.value || '',
+        placement: anchor.querySelector('.anchor-placement')?.value || '',
+        color: anchor.querySelector('.anchor-color')?.value || '#000000',
+        image: anchor.querySelector('.anchor-image')?.dataset.imageData || ''
+      }))
+    }
+  });
+  return { palaceName, rooms };
+}
+
+function savePalaceToLocalStorage() {
+  const data = getPalaceData();
+  localStorage.setItem('mnemo-palace', JSON.stringify(data));
+}
+
+function loadPalaceFromLocalStorage() {
+  const saved = localStorage.getItem('mnemo-palace');
+  if (saved) {
+    const data = JSON.parse(saved);
+    populatePalaceFromData(data);
+  }
+}
+
+function populatePalaceFromData(data) {
+  document.querySelector('.room-name').value = data.rooms[0].name;
+  document.querySelector('.room-template').value = data.rooms[0].template;
+
+  const anchorBtn = document.querySelector('button[onclick^="addAnchorToRoom"]');
+  data.rooms[0].anchors.forEach(() => addAnchorToRoom(anchorBtn));
+
+  const anchors = document.querySelectorAll('.anchor-group .field');
+  data.rooms[0].anchors.forEach((a, i) => {
+    anchors[i].querySelector('.anchor-name').value = a.name;
+    anchors[i].querySelector('.anchor-meaning').value = a.meaning;
+    anchors[i].querySelector('.anchor-placement').value = a.placement;
+    anchors[i].querySelector('.anchor-color').value = a.color;
+    if (a.image) {
+      const input = anchors[i].querySelector('.anchor-image');
+      const preview = anchors[i].querySelector('.anchor-preview');
+      input.dataset.imageData = a.image;
+      preview.src = a.image;
+      preview.style.display = 'block';
+    }
+  });
+}

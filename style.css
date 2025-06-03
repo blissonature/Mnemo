@@ -1,53 +1,91 @@
 body {
-  font-family: 'Helvetica Neue', sans-serif;
-  margin: 0;
-  padding: 2rem;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   background: #fcfbf7;
   color: #222;
+  padding: 2rem;
+  margin: 0;
 }
 
-h1, h2, h3 {
-  color: #3b3b3b;
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+h2, h3, h4 {
+  margin-top: 1.5rem;
+}
+
+main {
+  max-width: 800px;
+  margin: auto;
 }
 
 .field {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
   background: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 input[type="text"],
+select,
 input[type="color"],
-input[type="file"],
-button {
+input[type="file"] {
   display: block;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  padding: 0.4rem;
   width: 100%;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  padding: 0.4rem;
+  font-size: 1rem;
   box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fafafa;
 }
 
 button {
-  background: #6a5acd;
+  background: #5a4abc;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
   cursor: pointer;
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 button:hover {
-  background: #5a4abc;
+  background: #4839a0;
+}
+
+.tip {
+  font-size: 0.9rem;
+  color: #555;
+  background: #f6f2ff;
+  border-left: 4px solid #9c88ff;
+  padding: 0.5rem;
+  border-radius: 4px;
 }
 
 img.anchor-preview {
-  display: block;
   margin-top: 0.5rem;
   max-width: 120px;
   border-radius: 4px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.2);
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+.guide {
+  background: #f8f5ec;
+  border-left: 5px solid #d4c4a1;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 2rem;
 }
