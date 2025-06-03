@@ -1,12 +1,12 @@
 // =========================
-// Mnemo | Rooms, Anchor Grouping, and Auto-Color Swatches
+// Mnemo | Rooms, Anchor Grouping, and Auto-Color Swatches (Updated UI Flow)
 // =========================
 
 window.addEventListener('DOMContentLoaded', () => {
   const activityContainer = document.getElementById('activity');
 
   renderGuide();
-  renderPalaceBuilder();
+  renderFirstRoom();
 
   function renderGuide() {
     const guide = document.createElement('div');
@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
     activityContainer.appendChild(guide);
   }
 
-  function renderPalaceBuilder() {
+  function renderFirstRoom() {
     const builder = document.createElement('form');
     builder.id = 'palaceForm';
     builder.innerHTML = `
@@ -30,36 +30,26 @@ window.addEventListener('DOMContentLoaded', () => {
         <label>Palace Name:</label>
         <input type="text" id="palaceName" placeholder="Temple of Echoes" required />
       </div>
-      <div class="field">
-        <label>Number of Rooms:</label>
-        <input type="number" id="roomCount" placeholder="3" min="1" max="12" value="3" />
-        <button type="button" onclick="createRooms()">Create Rooms</button>
-      </div>
       <div id="rooms"></div>
-      <button type="submit">💾 Save & Preview</button>
+      <button type="button" onclick="addRoom()">➕ Add Room</button>
     `;
-    builder.addEventListener('submit', (e) => {
-      e.preventDefault();
-      renderSummary();
-    });
     activityContainer.appendChild(builder);
+    addRoom();
   }
 
-  window.createRooms = function () {
-    const roomCount = parseInt(document.getElementById('roomCount').value) || 1;
+  window.addRoom = function () {
     const container = document.getElementById('rooms');
-    container.innerHTML = '';
-    for (let i = 0; i < roomCount; i++) {
-      const room = document.createElement('div');
-      room.className = 'field';
-      room.innerHTML = `
-        <h3>🚪 Room ${i + 1}</h3>
-        <input type="text" placeholder="Room name (e.g. Library of Law)" class="room-name" />
-        <div class="anchor-group"></div>
-        <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
-      `;
-      container.appendChild(room);
-    }
+    const roomIndex = container.children.length + 1;
+    const room = document.createElement('div');
+    room.className = 'field';
+    room.innerHTML = `
+      <h3>🚪 Room ${roomIndex}</h3>
+      <input type="text" placeholder="Room name (e.g. Library of Law)" class="room-name" />
+      <div class="anchor-group"></div>
+      <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
+      <hr />
+    `;
+    container.appendChild(room);
   }
 
   window.addAnchorToRoom = function (btn) {
@@ -83,7 +73,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <label>Choose Icon:</label>
         <div class="icon-grid-wrapper">
           <button class="icon-grid-toggle" onclick="toggleIconGrid(this)" type="button">Show Icons ▾</button>
-          <div class=\"icon-grid\" style=\"display:none;\">
+          <div class="icon-grid" style="display:none;">
             ${emojiSet.map(i => `<button type='button' onclick='selectIcon(this)'>${i}</button>`).join('')}
           </div>
         </div>
@@ -107,40 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
   window.toggleIconGrid = function (btn) {
     const grid = btn.nextElementSibling;
     const showing = grid.classList.toggle('show');
+    grid.style.display = showing ? 'grid' : 'none';
     btn.textContent = showing ? 'Hide Icons ▴' : 'Show Icons ▾';
-  }
-
-  function renderSummary() {
-    const name = document.getElementById('palaceName').value.trim();
-    const rooms = [...document.querySelectorAll('#rooms > .field')];
-
-    let text = `Memory Palace: ${name}\n\n`;
-
-    rooms.forEach((room, i) => {
-      const roomName = room.querySelector('.room-name').value.trim() || `Room ${i + 1}`;
-      text += `Room ${i + 1}: ${roomName}\n`;
-
-      const anchors = [...room.querySelectorAll('.anchor-group > .field')];
-      anchors.forEach((a, j) => {
-        const icon = a.querySelector('.anchor-icon').value.trim();
-        const title = a.querySelector('.anchor-name').value.trim();
-        const meaning = a.querySelector('.anchor-meaning').value.trim();
-        const color = a.querySelector('.anchor-color').value;
-        text += `  Anchor ${j + 1}: ${icon} ${title}\n    Meaning: ${meaning}\n    Color: ${color}\n`;
-      });
-
-      text += `\n`;
-    });
-
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-
-    activityContainer.innerHTML = `
-      <h2>📜 Memory Palace Summary</h2>
-      <pre>${text}</pre>
-      <a href="${url}" download="${name.replace(/\s+/g, '_')}_palace.txt">⬇️ Download .txt</a>
-      <button onclick="window.print()">🖨️ Print</button>
-      <button onclick="location.reload()">🔁 Start Over</button>
-    `;
   }
 });

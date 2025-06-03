@@ -1,136 +1,109 @@
-/* =========================
-   Mnemo | Enhanced Memory Palace Styling
-   ========================= */
-
 body {
-  font-family: 'Georgia', serif;
-  background-color: #1e1b18;
-  color: #f3f3f0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #1a1a1a;
+  color: #f4f4f4;
   margin: 0;
   padding: 0;
 }
 
 header {
-  background-color: #3b362f;
-  padding: 1.5em;
+  background-color: #111;
   text-align: center;
+  padding: 1.5rem;
   border-bottom: 2px solid #444;
 }
 
-h1 {
-  font-size: 2.2em;
+header h1 {
   margin: 0;
-  color: #e2d7b3;
+  font-size: 2.5rem;
+  color: #fffa;
 }
 
 .subtitle {
-  font-size: 1em;
-  margin-top: 0.5em;
-  color: #aaa;
-  font-style: italic;
-}
-
-.controls {
-  display: flex;
-  justify-content: center;
-  gap: 1em;
-  padding: 1em;
-  background-color: #292522;
-  border-bottom: 1px solid #444;
-}
-
-button {
-  background-color: #5e5242;
-  color: #fff;
-  padding: 0.6em 1em;
-  border: none;
-  border-radius: 6px;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #7a6c5c;
+  font-size: 1rem;
+  color: #ccc;
 }
 
 main {
-  padding: 2em;
-  max-width: 800px;
-  margin: 0 auto;
+  padding: 2rem;
+  max-width: 900px;
+  margin: auto;
 }
 
-footer {
-  text-align: center;
-  font-size: 0.9em;
-  color: #777;
-  padding: 2em 0;
-  background-color: #1b1815;
-  border-top: 1px solid #444;
-}
-
-label {
-  font-size: 0.9em;
-  color: #ddd;
+h2, h3, h4 {
+  color: #fdfdfd;
 }
 
 .field {
-  background: #2a2520;
-  padding: 1em;
-  margin: 1em 0;
-  border: 1px solid #444;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  transition: background 0.3s;
+  margin-bottom: 1.5rem;
 }
 
-.field:hover {
-  background: #352e27;
+input[type="text"],
+input[type="color"] {
+  padding: 0.6rem;
+  width: 100%;
+  border-radius: 6px;
+  border: none;
+  margin-top: 0.5rem;
+  background: #2a2a2a;
+  color: white;
+}
+
+input[type="color"] {
+  width: 60px;
+  height: 40px;
+  padding: 0;
+  margin-left: 0.5rem;
+}
+
+button {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+  padding: 0.6rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+button:hover {
+  background-color: #444;
+}
+
+.icon-grid-wrapper {
+  margin-top: 0.5rem;
+}
+
+.icon-grid-toggle {
+  margin-bottom: 0.5rem;
+  background: #222;
 }
 
 .icon-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  margin-top: 0.5em;
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 6px;
+  padding: 0.5rem 0;
+}
+
+.icon-grid.show {
+  display: grid;
 }
 
 .icon-grid button {
-  font-size: 1.5em;
-  padding: 0.4em;
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: #2d2d2d;
   border: none;
-  background: #3a342f;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.3s;
 }
 
 .icon-grid button:hover {
-  background: #5a4f45;
-  transform: scale(1.1);
+  background-color: #3a3a3a;
 }
 
-pre {
-  background: #111;
-  padding: 1em;
-  border-radius: 6px;
-  overflow-x: auto;
-  color: #ddd;
-}
-
-input[type="text"], input[type="color"] {
-  padding: 0.4em;
-  margin-top: 0.3em;
-  margin-bottom: 0.8em;
-  width: 100%;
-  font-size: 1em;
-  background: #1c1917;
-  border: 1px solid #555;
-  color: #f3f3f0;
-  border-radius: 4px;
-}
-
-input[type="text"]::placeholder {
-  color: #888;
+hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 2rem 0;
 }
