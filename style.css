@@ -1,4 +1,7 @@
-/* Mnemo | Memory Palace Builder – Saturnian Styling Layer */
+/* =========================
+   Mnemo | Enhanced Memory Palace Styling
+   ========================= */
+
 body {
   font-family: 'Georgia', serif;
   background-color: #1e1b18;
@@ -69,4 +72,65 @@ footer {
 label {
   font-size: 0.9em;
   color: #ddd;
+}
+
+.field {
+  background: #2a2520;
+  padding: 1em;
+  margin: 1em 0;
+  border: 1px solid #444;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  transition: background 0.3s;
+}
+
+.field:hover {
+  background: #352e27;
+}
+
+.icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-top: 0.5em;
+}
+
+.icon-grid button {
+  font-size: 1.5em;
+  padding: 0.4em;
+  border: none;
+  background: #3a342f;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.icon-grid button:hover {
+  background: #5a4f45;
+  transform: scale(1.1);
+}
+
+pre {
+  background: #111;
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+  color: #ddd;
+}
+
+input[type="text"], input[type="color"] {
+  padding: 0.4em;
+  margin-top: 0.3em;
+  margin-bottom: 0.8em;
+  width: 100%;
+  font-size: 1em;
+  background: #1c1917;
+  border: 1px solid #555;
+  color: #f3f3f0;
+  border-radius: 4px;
+}
+
+input[type="text"]::placeholder {
+  color: #888;
 }
