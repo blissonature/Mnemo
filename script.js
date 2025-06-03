@@ -1,16 +1,13 @@
 // =========================
-// Mnemo | Full Emoji Picker with 100 Icons
+// Mnemo | Full Emoji Picker with 100 Icons — Direct Wizard Mode
 // =========================
 
 window.addEventListener('DOMContentLoaded', () => {
-  const showGuideToggle = document.getElementById('showGuideToggle');
   const activityContainer = document.getElementById('activity');
 
-  window.startActivity = function (activity) {
-    activityContainer.innerHTML = '';
-    if (showGuideToggle.checked) renderGuide();
-    renderPalaceBuilder();
-  };
+  // Start immediately without buttons or guide toggle
+  renderGuide();
+  renderPalaceBuilder();
 
   function renderGuide() {
     const guide = document.createElement('div');
@@ -118,7 +115,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <pre>${text}</pre>
       <a href="${url}" download="${name.replace(/\s+/g, '_')}_palace.txt">⬇️ Download .txt</a>
       <button onclick="window.print()">🖨️ Print</button>
-      <button onclick="startActivity('palace')">🔁 Start Over</button>
+      <button onclick="location.reload()">🔁 Start Over</button>
     `;
   }
 });
