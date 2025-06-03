@@ -83,7 +83,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <label>Choose Icon:</label>
         <div class="icon-grid-wrapper">
           <button class="icon-grid-toggle" onclick="toggleIconGrid(this)" type="button">Show Icons ▾</button>
-          <div class="icon-grid">
+          <div class=\"icon-grid\" style=\"display:none;\">
             ${emojiSet.map(i => `<button type='button' onclick='selectIcon(this)'>${i}</button>`).join('')}
           </div>
         </div>
