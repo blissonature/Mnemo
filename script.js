@@ -1,5 +1,5 @@
 // =========================
-// Mnemo | Room Templates, Anchor Tips, Spatial Labels + Save + Preview Fixes
+// Mnemo | Prefab Anchors per Room Template + Custom Option
 // =========================
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -11,7 +11,6 @@ window.addEventListener('DOMContentLoaded', () => {
   addViewToggle();
   loadPalaceFromLocalStorage();
 
-  // Auto-save anytime form updates
   activityContainer.addEventListener('input', savePalaceToLocalStorage);
 });
 
@@ -21,7 +20,7 @@ function renderGuide() {
     <section class="guide">
       <h2>🧭 Guide: Building a Memory Palace</h2>
       <p>Each room holds a symbolic theme. Each anchor should be vivid, symbolic, and emotionally resonant.</p>
-      <p>Use placement and color to deepen association. Upload an image or visualize one clearly in your mind.</p>
+      <p>Use placement and color to deepen association. Upload an image or visualize one clearly in your mind. Add memories to transform insight into retrieval.</p>
     </section>
     <hr/>
   `;
@@ -52,6 +51,7 @@ function renderViewMode() {
       anchor.innerHTML = `
         <h4>📍 ${a.name}</h4>
         <p><strong>Meaning:</strong> ${a.meaning}</p>
+        <p><strong>Memory:</strong> ${a.memory || '—'}</p>
         <p><strong>Placement:</strong> ${a.placement || 'Unspecified'}</p>
         <p><strong>Color:</strong> <span style='background:${a.color}; padding:0 10px;'>${a.color}</span></p>
         ${a.image ? `<img src="${a.image}" style="max-width:100px; margin-top:5px;" />` : ''}
@@ -67,16 +67,49 @@ function renderViewMode() {
   activityContainer.appendChild(back);
 }
 
+const prefabAnchorSets = {
+  'Temple of Saturn': [
+    ['Obsidian Cube', 'Unyielding truth'], ['Hourglass', 'Time mastery'], ['Scythe', 'Cutting away falsehood'],
+    ['Black Gate', 'Threshold to discipline'], ['Lantern', 'Guided darkness'], ['Column', 'Unshakable structure'],
+    ['Chain', 'Constraint and effort'], ['Star Map', 'Celestial orientation'], ['Mirror', 'Self-confrontation'],
+    ['Altar', 'Sacred order'], ['Ring of Lead', 'Burden and focus'], ['Candle Stub', 'Endurance']
+  ],
+  'Garden of Mnemosyne': [
+    ['Fountain', 'Overflowing inspiration'], ['Vine', 'Growth over time'], ['Shell', 'Listening inward'],
+    ['Butterfly', 'Transience'], ['Book', 'Written memory'], ['Cloud', 'Dreamscape'], ['Feather', 'Whispers'],
+    ['Bowl', 'Offering to muses'], ['Stream', 'Flow of thought'], ['Moss', 'Soft recollection'],
+    ['Fruit', 'Sweet truth'], ['Pathway', 'Memory journey']
+  ],
+  'Library of Alexandria': [
+    ['Scroll', 'Lost knowledge'], ['Quill', 'Authorship'], ['Inkpot', 'Fluid truth'], ['Torch', 'Guiding light'],
+    ['Dusty Tome', 'Ancient record'], ['Globe', 'Wider view'], ['Ladder', 'Ascension'], ['Bust', 'Classical wisdom'],
+    ['Desk', 'Studious discipline'], ['Map', 'Worldly knowledge'], ['Window', 'Perspective'], ['Key', 'Unlocking insight']
+  ],
+  'Labyrinth of Daedalus': [
+    ['Thread', 'Way through'], ['Minotaur Mask', 'Shadow self'], ['Torch', 'Light in dark'], ['Footprint', 'Previous step'],
+    ['Stone Door', 'Sealed truth'], ['Echo', 'Reverberation'], ['Puzzle Box', 'Complex thought'], ['Net', 'Caught ideas'],
+    ['Spiral', 'Inner path'], ['Skull', 'Mortality'], ['Chalk Mark', 'Trail'], ['Eye', 'Hidden watcher']
+  ]
+};
+
 window.addAnchorToRoom = function (btn) {
   const group = btn.previousElementSibling;
-  const index = group.children.length + 1;
+  const section = btn.closest('section');
+  const template = section.querySelector('.room-template').value;
+
+  const anchors = prefabAnchorSets[template] || [];
+  const index = group.children.length;
+
+  const data = anchors[index] || ['', ''];
+
   const anchor = document.createElement('div');
   anchor.className = 'field';
 
   anchor.innerHTML = `
-    <h4>📍 Anchor ${index}</h4>
-    <input type="text" placeholder="Name (e.g. Statue of Saturn)" class="anchor-name" />
-    <input type="text" placeholder="Meaning (e.g. Self-discipline)" class="anchor-meaning" />
+    <h4>📍 Anchor ${index + 1}</h4>
+    <input type="text" value="${data[0]}" placeholder="Name" class="anchor-name" />
+    <input type="text" value="${data[1]}" placeholder="Meaning" class="anchor-meaning" />
+    <textarea placeholder="Memory (optional)" class="anchor-memory"></textarea>
     <select class="anchor-placement">
       <option value="">Select Placement</option>
       <option>Left Wall</option>
@@ -95,10 +128,11 @@ window.addAnchorToRoom = function (btn) {
     <p class="tip">💡 Tip: Make it surreal. Imagine this object floating, glowing, or making sound.</p>
     <button type="button" onclick="savePalaceToLocalStorage()">💾 Save Anchor</button>
   `;
+
   group.appendChild(anchor);
 }
 
-function previewImage(input) {
+window.previewImage = function(input) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -110,80 +144,4 @@ function previewImage(input) {
     savePalaceToLocalStorage();
   };
   reader.readAsDataURL(file);
-}
-
-function renderFirstRoom() {
-  const activityContainer = document.getElementById('activity');
-  const section = document.createElement('section');
-  section.className = 'field';
-  section.innerHTML = `
-    <h3>🚪 Create First Room</h3>
-    <input type="text" placeholder="Room Name (e.g. Library of Saturn)" class="room-name" />
-    <select class="room-template">
-      <option value="">Choose Template</option>
-      <option>Temple</option>
-      <option>Library</option>
-      <option>Cave</option>
-      <option>Garden</option>
-      <option>Tower</option>
-      <option>Celestial Dome</option>
-    </select>
-    <div class="field anchor-group"></div>
-    <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
-  `;
-  activityContainer.appendChild(section);
-}
-
-function getPalaceData() {
-  const palaceName = document.querySelector('header h1')?.textContent || 'Untitled';
-  const rooms = [...document.querySelectorAll('section')].filter(s => s.querySelector('.room-name')).map(room => {
-    return {
-      name: room.querySelector('.room-name').value,
-      template: room.querySelector('.room-template').value,
-      anchors: [...room.querySelectorAll('.anchor-group .field')].map(anchor => ({
-        name: anchor.querySelector('.anchor-name')?.value || '',
-        meaning: anchor.querySelector('.anchor-meaning')?.value || '',
-        placement: anchor.querySelector('.anchor-placement')?.value || '',
-        color: anchor.querySelector('.anchor-color')?.value || '#000000',
-        image: anchor.querySelector('.anchor-image')?.dataset.imageData || ''
-      }))
-    }
-  });
-  return { palaceName, rooms };
-}
-
-function savePalaceToLocalStorage() {
-  const data = getPalaceData();
-  localStorage.setItem('mnemo-palace', JSON.stringify(data));
-}
-
-function loadPalaceFromLocalStorage() {
-  const saved = localStorage.getItem('mnemo-palace');
-  if (saved) {
-    const data = JSON.parse(saved);
-    populatePalaceFromData(data);
-  }
-}
-
-function populatePalaceFromData(data) {
-  document.querySelector('.room-name').value = data.rooms[0].name;
-  document.querySelector('.room-template').value = data.rooms[0].template;
-
-  const anchorBtn = document.querySelector('button[onclick^="addAnchorToRoom"]');
-  data.rooms[0].anchors.forEach(() => addAnchorToRoom(anchorBtn));
-
-  const anchors = document.querySelectorAll('.anchor-group .field');
-  data.rooms[0].anchors.forEach((a, i) => {
-    anchors[i].querySelector('.anchor-name').value = a.name;
-    anchors[i].querySelector('.anchor-meaning').value = a.meaning;
-    anchors[i].querySelector('.anchor-placement').value = a.placement;
-    anchors[i].querySelector('.anchor-color').value = a.color;
-    if (a.image) {
-      const input = anchors[i].querySelector('.anchor-image');
-      const preview = anchors[i].querySelector('.anchor-preview');
-      input.dataset.imageData = a.image;
-      preview.src = a.image;
-      preview.style.display = 'block';
-    }
-  });
 }
