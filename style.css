@@ -1,0 +1,72 @@
+/* Mnemo | Memory Palace Builder – Saturnian Styling Layer */
+body {
+  font-family: 'Georgia', serif;
+  background-color: #1e1b18;
+  color: #f3f3f0;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #3b362f;
+  padding: 1.5em;
+  text-align: center;
+  border-bottom: 2px solid #444;
+}
+
+h1 {
+  font-size: 2.2em;
+  margin: 0;
+  color: #e2d7b3;
+}
+
+.subtitle {
+  font-size: 1em;
+  margin-top: 0.5em;
+  color: #aaa;
+  font-style: italic;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  padding: 1em;
+  background-color: #292522;
+  border-bottom: 1px solid #444;
+}
+
+button {
+  background-color: #5e5242;
+  color: #fff;
+  padding: 0.6em 1em;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #7a6c5c;
+}
+
+main {
+  padding: 2em;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.9em;
+  color: #777;
+  padding: 2em 0;
+  background-color: #1b1815;
+  border-top: 1px solid #444;
+}
+
+label {
+  font-size: 0.9em;
+  color: #ddd;
+}
