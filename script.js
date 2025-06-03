@@ -1,11 +1,10 @@
 // =========================
-// Mnemo | Prefab Anchors per Room Template + Custom Option + View Mode + Save Feedback
+// Mnemo | Room Template → Immediate Anchor + Working Save + No Guide Label + Visual Steps
 // =========================
 
 window.addEventListener('DOMContentLoaded', () => {
   const activityContainer = document.getElementById('activity');
 
-  renderGuide();
   renderTemplateSelector();
   addJSONControls();
   addViewToggle();
@@ -14,23 +13,16 @@ window.addEventListener('DOMContentLoaded', () => {
   activityContainer.addEventListener('input', savePalaceToLocalStorage);
 });
 
-function renderGuide() {
-  const guide = document.createElement('div');
-  guide.innerHTML = `
-    <section class="guide">
-      <h2>🗭 Guide: Building a Memory Palace</h2>
-      <p>Each room holds a symbolic theme. Each anchor should be vivid, symbolic, and emotionally resonant.</p>
-      <p>Use placement and color to deepen association. Upload an image or visualize one clearly in your mind. Add memories to transform insight into retrieval.</p>
-    </section>
-    <hr/>
-  `;
-  document.getElementById('activity').appendChild(guide);
-}
-
 function renderTemplateSelector() {
   const section = document.createElement('section');
   section.className = 'field';
   section.innerHTML = `
+    <p>
+      <strong>Step 1:</strong> 🏛️ Choose a room for storing your memories (select an existing template or create a new one).<br/>
+      <strong>Step 2:</strong> 📍 Choose an object within the room to anchor your memory to.<br/>
+      <strong>Step 3:</strong> 🧠 Add the details of this memory to be displayed upon retrieval.<br/>
+      <strong>Step 4:</strong> 👁️ View the immersive memory palace you’ve assembled.
+    </p>
     <h3>🚪 Select Room Template</h3>
     <select class="room-template" onchange="renderRoomWithTemplate(this.value)">
       <option value="">Choose Template</option>
@@ -59,6 +51,10 @@ window.renderRoomWithTemplate = function(template) {
     <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
   `;
   document.getElementById('activity').appendChild(section);
+
+  // Immediately add the first anchor
+  const btn = section.querySelector('button');
+  addAnchorToRoom(btn);
 };
 
 function addViewToggle() {
