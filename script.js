@@ -15,23 +15,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function renderTemplateSelector() {
   const section = document.createElement('section');
-  section.className = 'field';
+  section.className = 'step-box';
   section.innerHTML = `
-    <p>
+    <h2 class="branded-title">⟠ Mnemo</h2>
+    <p class="subtitle">A Saturnian tool for memory and symbol work</p>
+    <div class="step-instructions">
       <strong>Step 1:</strong> 🏛️ Choose a room for storing your memories (select an existing template or create a new one).<br/>
       <strong>Step 2:</strong> 📍 Choose an object within the room to anchor your memory to.<br/>
       <strong>Step 3:</strong> 🧠 Add the details of this memory to be displayed upon retrieval.<br/>
       <strong>Step 4:</strong> 👁️ View the immersive memory palace you’ve assembled.
-    </p>
-    <h3>🚪 Select Room Template</h3>
-    <select class="room-template" onchange="renderRoomWithTemplate(this.value)">
-      <option value="">Choose Template</option>
-      <option>Temple of Saturn</option>
-      <option>Garden of Mnemosyne</option>
-      <option>Library of Alexandria</option>
-      <option>Labyrinth of Daedalus</option>
-    </select>
-  `;
+    </div>`;
   document.getElementById('activity').appendChild(section);
 }
 
@@ -44,9 +37,12 @@ window.renderRoomWithTemplate = function(template) {
   section.innerHTML = `
     <h3>🚪 Create Room</h3>
     <input type="text" value="Room ${roomCounter++}" class="room-name" />
-    <select class="room-template">
-      <option selected>${template}</option>
-    </select>
+    <div class="field">
+      <label for="template">Template:</label>
+      <select class="room-template">
+        <option selected>${template}</option>
+      </select>
+    </div>
     <div class="field anchor-group"></div>
     <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
   `;
