@@ -1,12 +1,12 @@
 // =========================
-// Mnemo | Room Template → Immediate Anchor + Working Save + No Guide Label + Visual Steps
+// Mnemo | Room Template → Immediate Anchor + Working Save + No Guide Label + Visual Steps + JSON Controls
 // =========================
 
 window.addEventListener('DOMContentLoaded', () => {
   const activityContainer = document.getElementById('activity');
 
   renderTemplateSelector();
-  addJSONControls();
+  
   addViewToggle();
   loadPalaceFromLocalStorage();
 
@@ -33,9 +33,9 @@ let roomCounter = 1;
 window.renderRoomWithTemplate = function(template) {
   if (!template) return;
   const section = document.createElement('section');
-  section.className = 'field';
+  section.className = 'room-box';
   section.innerHTML = `
-    <h3>🚪 Create Room</h3>
+    <h3 class="room-title">🚪 Create Room</h3>
     <input type="text" value="Room ${roomCounter++}" class="room-name" />
     <div class="field">
       <label for="template">Template:</label>
@@ -52,6 +52,40 @@ window.renderRoomWithTemplate = function(template) {
   const btn = section.querySelector('button');
   addAnchorToRoom(btn);
 };
+
+function addJSONControls() {
+  const controls = document.createElement('div');
+  controls.innerHTML = `
+    <hr/>
+    <button onclick="downloadPalace()">💾 Download .json</button>
+    <input type="file" accept="application/json" onchange="uploadPalace(event)" title="Upload Palace JSON"/>
+  `;
+  document.getElementById('activity').appendChild(controls);
+}
+
+function downloadPalace() {
+  const palace = localStorage.getItem('palace') || '[]';
+  const blob = new Blob([palace], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'memory-palace.json';
+  a.click();
+}
+
+function uploadPalace(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      localStorage.setItem('palace', reader.result);
+      renderViewMode();
+    } catch (e) {
+      alert('Failed to load memory palace JSON.');
+    }
+  };
+  reader.readAsText(file);
+}
 
 function addViewToggle() {
   const controls = document.createElement('div');
@@ -134,7 +168,7 @@ window.addAnchorToRoom = function (btn) {
   const data = anchors[index] || ['', ''];
 
   const anchor = document.createElement('div');
-  anchor.className = 'field';
+  anchor.className = 'anchor-box';
 
   anchor.innerHTML = `
     <h4>📍 Anchor ${index + 1}</h4>
