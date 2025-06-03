@@ -1,5 +1,5 @@
 // =========================
-// Mnemo | Enhanced Memory Palace Logic
+// Mnemo | Full Emoji Picker with 100 Icons
 // =========================
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -51,15 +51,25 @@ window.addEventListener('DOMContentLoaded', () => {
     const index = container.children.length + 1;
     const anchor = document.createElement('div');
     anchor.className = 'field';
+
+    const emojiSet = [
+      '⛩️','🜍','🕯️','🐚','🦉','📜','🗝️','🌌','🔮','🌿','📖','⚖️','🧿','🪞','📿','🗿','🏛️','✨','🔔','💠','🧠','🪬','🪄','🜁','🜂','🜃','🜄',
+      '🔥','💧','🌬️','🌱','🪐','🌕','🌑','🌗','🌓','🌙','☀️','⭐','🪨','🪵','🕳️','🛡️','🗡️','🩸','🧪','🧬','🧫','⚗️','📡','🔭','🧰','🎴','🪙',
+      '🏺','🪔','📚','🔓','🔐','🎼','🎨','🧵','🧶','🪡','🖋️','🗂️','🪆','🧸','🎠','🛸','🦢','🦋','🐉','🐍','🦂','🪲','🦎','🧿','🔯','♾️','☯️','⚛️'
+    ];
+
     anchor.innerHTML = `
-      <h3>🔖 Anchor ${index}</h3>
+      <h3>📍 Anchor ${index}</h3>
       <input type="text" placeholder="Name (e.g. Statue of Saturn)" class="anchor-name" />
       <input type="text" placeholder="Meaning (e.g. Self-discipline)" class="anchor-meaning" />
       <input type="color" class="anchor-color" title="Choose Color" />
       <div class="icon-picker">
         <label>Choose Icon:</label>
-        <div class="icon-grid">
-          ${['⛩️','🜍','🕯️','🐚','🦉','📜','🗝️','🌌','🔮'].map(icon => `<button type="button" onclick="selectIcon(this)">${icon}</button>`).join('')}
+        <div class="icon-grid-wrapper">
+          <button class="icon-grid-toggle" onclick="toggleIconGrid(this)" type="button">Show Icons ▾</button>
+          <div class="icon-grid">
+            ${emojiSet.map(i => `<button type='button' onclick='selectIcon(this)'>${i}</button>`).join('')}
+          </div>
         </div>
         <input type="hidden" class="anchor-icon" />
       </div>
@@ -72,11 +82,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const field = button.closest('.field');
     const hiddenInput = field.querySelector('.anchor-icon');
     hiddenInput.value = icon;
-    // Optionally show confirmation
-    button.style.outline = '2px solid #fff';
     [...button.parentNode.children].forEach(b => {
       if (b !== button) b.style.outline = 'none';
     });
+    button.style.outline = '2px solid #fff';
+  }
+
+  window.toggleIconGrid = function (btn) {
+    const grid = btn.nextElementSibling;
+    const showing = grid.classList.toggle('show');
+    btn.textContent = showing ? 'Hide Icons ▴' : 'Show Icons ▾';
   }
 
   function renderSummary() {
