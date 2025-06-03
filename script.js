@@ -1,6 +1,18 @@
 // =========================
 // Mnemo | Room Templates, Anchor Tips, Spatial Labels
 // =========================
+function renderGuide() {
+  const guide = document.createElement('div');
+  guide.innerHTML = `
+    <section class="guide">
+      <h2>🧭 Guide: Building a Memory Palace</h2>
+      <p>Each room holds a symbolic theme. Each anchor should be vivid, symbolic, and emotionally resonant.</p>
+      <p>Use placement and color to deepen association. Upload an image or visualize one clearly in your mind.</p>
+    </section>
+    <hr/>
+  `;
+  document.getElementById('activity').appendChild(guide);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   const activityContainer = document.getElementById('activity');
