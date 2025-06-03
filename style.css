@@ -1,91 +1,80 @@
 body {
-  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-  background: #fcfbf7;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f7f7f9;
   color: #222;
-  padding: 2rem;
   margin: 0;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-h1 {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-h2, h3, h4 {
-  margin-top: 1.5rem;
+  padding: 2em;
 }
 
 main {
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
+  background: white;
+  padding: 2em;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  font-weight: 600;
 }
 
 .field {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  margin-bottom: 1.8em;
 }
 
 input[type="text"],
-select,
-input[type="color"],
-input[type="file"] {
+textarea,
+select {
   display: block;
   width: 100%;
-  margin-top: 0.25rem;
-  margin-bottom: 1rem;
-  padding: 0.4rem;
-  font-size: 1rem;
-  box-sizing: border-box;
+  max-width: 600px;
+  margin-top: 0.4em;
+  padding: 0.7em;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #fafafa;
+  font-size: 1em;
+}
+
+input[type="color"] {
+  margin-top: 0.6em;
+}
+
+input[type="file"] {
+  margin-top: 0.6em;
 }
 
 button {
-  background: #5a4abc;
-  color: white;
+  margin-top: 0.8em;
+  padding: 0.7em 1.4em;
+  font-size: 1em;
   border: none;
-  border-radius: 4px;
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
+  border-radius: 6px;
+  background: #5555cc;
+  color: white;
   cursor: pointer;
-  margin-top: 0.5rem;
-  width: 100%;
+  transition: background 0.2s ease;
 }
 
 button:hover {
-  background: #4839a0;
-}
-
-.tip {
-  font-size: 0.9rem;
-  color: #555;
-  background: #f6f2ff;
-  border-left: 4px solid #9c88ff;
-  padding: 0.5rem;
-  border-radius: 4px;
+  background: #3333aa;
 }
 
 img.anchor-preview {
-  margin-top: 0.5rem;
-  max-width: 120px;
+  display: block;
+  margin-top: 0.5em;
+  max-width: 100px;
   border-radius: 4px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+  border: 1px solid #ccc;
 }
 
-.guide {
-  background: #f8f5ec;
-  border-left: 5px solid #d4c4a1;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 2rem;
+p.tip {
+  font-size: 0.9em;
+  color: #444;
+  background: #eef;
+  padding: 0.6em;
+  border-left: 4px solid #88f;
+  margin-top: 0.8em;
+  border-radius: 4px;
 }

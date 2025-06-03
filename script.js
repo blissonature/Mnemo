@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const activityContainer = document.getElementById('activity');
 
   renderGuide();
-  renderFirstRoom();
+  renderTemplateSelector();
   addJSONControls();
   addViewToggle();
   loadPalaceFromLocalStorage();
@@ -27,24 +27,39 @@ function renderGuide() {
   document.getElementById('activity').appendChild(guide);
 }
 
-function renderFirstRoom() {
+function renderTemplateSelector() {
   const section = document.createElement('section');
   section.className = 'field';
   section.innerHTML = `
-    <h3>🚪 Create First Room</h3>
-    <input type="text" placeholder="Room Name (e.g. Temple of Saturn)" class="room-name" />
-    <select class="room-template">
+    <h3>🚪 Select Room Template</h3>
+    <select class="room-template" onchange="renderRoomWithTemplate(this.value)">
       <option value="">Choose Template</option>
       <option>Temple of Saturn</option>
       <option>Garden of Mnemosyne</option>
       <option>Library of Alexandria</option>
       <option>Labyrinth of Daedalus</option>
     </select>
+  `;
+  document.getElementById('activity').appendChild(section);
+}
+
+let roomCounter = 1;
+
+window.renderRoomWithTemplate = function(template) {
+  if (!template) return;
+  const section = document.createElement('section');
+  section.className = 'field';
+  section.innerHTML = `
+    <h3>🚪 Create Room</h3>
+    <input type="text" value="Room ${roomCounter++}" class="room-name" />
+    <select class="room-template">
+      <option selected>${template}</option>
+    </select>
     <div class="field anchor-group"></div>
     <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
   `;
   document.getElementById('activity').appendChild(section);
-}
+};
 
 function addViewToggle() {
   const controls = document.createElement('div');
