@@ -1,10 +1,11 @@
-// Mnemo | Memory Palace Logic
+// =========================
+// Mnemo | Enhanced Memory Palace Logic
+// =========================
 
 window.addEventListener('DOMContentLoaded', () => {
   const showGuideToggle = document.getElementById('showGuideToggle');
   const activityContainer = document.getElementById('activity');
 
-  // Memory Palace activity
   window.startActivity = function (activity) {
     activityContainer.innerHTML = '';
     if (showGuideToggle.checked) renderGuide();
@@ -42,7 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
       renderSummary();
     });
     activityContainer.appendChild(builder);
-    addAnchor(); // Start with one anchor
+    addAnchor();
   }
 
   window.addAnchor = function () {
@@ -55,10 +56,28 @@ window.addEventListener('DOMContentLoaded', () => {
       <input type="text" placeholder="Name (e.g. Statue of Saturn)" class="anchor-name" />
       <input type="text" placeholder="Meaning (e.g. Self-discipline)" class="anchor-meaning" />
       <input type="color" class="anchor-color" title="Choose Color" />
-      <input type="text" placeholder="Icon (e.g. ⛩️)" class="anchor-icon" />
+      <div class="icon-picker">
+        <label>Choose Icon:</label>
+        <div class="icon-grid">
+          ${['⛩️','🜍','🕯️','🐚','🦉','📜','🗝️','🌌','🔮'].map(icon => `<button type="button" onclick="selectIcon(this)">${icon}</button>`).join('')}
+        </div>
+        <input type="hidden" class="anchor-icon" />
+      </div>
     `;
     container.appendChild(anchor);
-  };
+  }
+
+  window.selectIcon = function (button) {
+    const icon = button.textContent;
+    const field = button.closest('.field');
+    const hiddenInput = field.querySelector('.anchor-icon');
+    hiddenInput.value = icon;
+    // Optionally show confirmation
+    button.style.outline = '2px solid #fff';
+    [...button.parentNode.children].forEach(b => {
+      if (b !== button) b.style.outline = 'none';
+    });
+  }
 
   function renderSummary() {
     const name = document.getElementById('palaceName').value.trim();
