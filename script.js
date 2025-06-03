@@ -1,5 +1,5 @@
 // =========================
-// Mnemo | Prefab Anchors per Room Template + Custom Option
+// Mnemo | Prefab Anchors per Room Template + Custom Option + View Mode + Save Feedback
 // =========================
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -18,7 +18,7 @@ function renderGuide() {
   const guide = document.createElement('div');
   guide.innerHTML = `
     <section class="guide">
-      <h2>🧭 Guide: Building a Memory Palace</h2>
+      <h2>🗭 Guide: Building a Memory Palace</h2>
       <p>Each room holds a symbolic theme. Each anchor should be vivid, symbolic, and emotionally resonant.</p>
       <p>Use placement and color to deepen association. Upload an image or visualize one clearly in your mind. Add memories to transform insight into retrieval.</p>
     </section>
@@ -69,6 +69,40 @@ function addViewToggle() {
   `;
   document.getElementById('activity').appendChild(controls);
 }
+
+window.renderViewMode = function () {
+  const container = document.getElementById('activity');
+  container.innerHTML = '<h2>🧠 Your Memory Palace</h2>';
+
+  const rooms = JSON.parse(localStorage.getItem('palace') || '[]');
+  if (rooms.length === 0) {
+    container.innerHTML += `<p>No palace found yet. Build one first!</p>`;
+    return;
+  }
+
+  rooms.forEach((room, rIndex) => {
+    const roomSection = document.createElement('section');
+    roomSection.className = 'field';
+    roomSection.innerHTML = `<h3>🏭️ ${room.name} (${room.template})</h3>`;
+
+    room.anchors.forEach((a, aIndex) => {
+      const anchorHTML = `
+        <div class="field">
+          <h4>📍 ${a.name}</h4>
+          <p><strong>Meaning:</strong> ${a.meaning}</p>
+          <p><strong>Memory:</strong> ${a.memory}</p>
+          <p><strong>Placement:</strong> ${a.placement}</p>
+          <p><strong>Color:</strong> <span style="display:inline-block;width:15px;height:15px;background:${a.color};border:1px solid #aaa;"></span></p>
+          ${a.image ? `<img src="${a.image}" class="anchor-preview" />` : ''}
+        </div>
+        <hr/>
+      `;
+      roomSection.innerHTML += anchorHTML;
+    });
+
+    container.appendChild(roomSection);
+  });
+};
 
 // ===== Core Logic: Prefab Anchors, Rendering, Storage =====
 
@@ -131,7 +165,7 @@ window.addAnchorToRoom = function (btn) {
       <img class="anchor-preview" style="display:none; max-width:100px; margin-top:5px;" />
     </div>
     <p class="tip">💡 Tip: Make it surreal. Imagine this object floating, glowing, or making sound.</p>
-    <button type="button" onclick="savePalaceToLocalStorage()">💾 Save Anchor</button>
+    <button type="button" onclick="saveAnchorFeedback(this)">📏 Save Anchor</button>
   `;
 
   group.appendChild(anchor);
@@ -149,4 +183,14 @@ window.previewImage = function(input) {
     savePalaceToLocalStorage();
   };
   reader.readAsDataURL(file);
+};
+
+window.saveAnchorFeedback = function(btn) {
+  savePalaceToLocalStorage();
+  btn.textContent = '✅ Anchor Saved!';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '📏 Save Anchor';
+    btn.disabled = false;
+  }, 2000);
 };
