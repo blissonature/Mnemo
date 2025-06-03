@@ -1,53 +1,53 @@
 body {
-  font-family: sans-serif;
-  background: #111;
-  color: #ddd;
+  font-family: 'Helvetica Neue', sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background: #fcfbf7;
+  color: #222;
+}
+
+h1, h2, h3 {
+  color: #3b3b3b;
+}
+
+.field {
+  margin-bottom: 1.5rem;
   padding: 1rem;
-  line-height: 1.6;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-main {
-  max-width: 900px;
-  margin: auto;
-}
-input, button, select {
-  background: #222;
-  color: #fff;
-  border: 1px solid #333;
-  padding: 0.4em 0.6em;
-  margin: 0.3em 0;
-}
+
+input[type="text"],
+input[type="color"],
+input[type="file"],
 button {
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  padding: 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  background: #6a5acd;
+  color: white;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
 }
-.field {
-  border: 1px solid #333;
-  padding: 1em;
-  margin-bottom: 1em;
-  background: #1a1a1a;
-  border-radius: 6px;
+
+button:hover {
+  background: #5a4abc;
 }
-.icon-grid-wrapper {
-  margin-top: 0.5em;
-}
-.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
-  gap: 6px;
-  margin-top: 0.5em;
-  max-height: 140px;
-  overflow-y: auto;
-}
-.icon-grid button {
-  font-size: 20px;
-  padding: 0;
-  background: #222;
-  border: none;
-}
-.anchor-image-preview {
-  margin-top: 0.5em;
-  max-width: 100px;
-  max-height: 100px;
+
+img.anchor-preview {
   display: block;
-  border: 1px solid #444;
+  margin-top: 0.5rem;
+  max-width: 120px;
   border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2);
 }
