@@ -27,6 +27,25 @@ function renderGuide() {
   document.getElementById('activity').appendChild(guide);
 }
 
+function renderFirstRoom() {
+  const section = document.createElement('section');
+  section.className = 'field';
+  section.innerHTML = `
+    <h3>🚪 Create First Room</h3>
+    <input type="text" placeholder="Room Name (e.g. Temple of Saturn)" class="room-name" />
+    <select class="room-template">
+      <option value="">Choose Template</option>
+      <option>Temple of Saturn</option>
+      <option>Garden of Mnemosyne</option>
+      <option>Library of Alexandria</option>
+      <option>Labyrinth of Daedalus</option>
+    </select>
+    <div class="field anchor-group"></div>
+    <button type="button" onclick="addAnchorToRoom(this)">➕ Add Anchor</button>
+  `;
+  document.getElementById('activity').appendChild(section);
+}
+
 function addViewToggle() {
   const controls = document.createElement('div');
   controls.innerHTML = `
@@ -36,36 +55,7 @@ function addViewToggle() {
   document.getElementById('activity').appendChild(controls);
 }
 
-function renderViewMode() {
-  const data = getPalaceData();
-  const activityContainer = document.getElementById('activity');
-  activityContainer.innerHTML = `<h2>🧠 Memory Palace Summary</h2><p><strong>${data.palaceName}</strong></p>`;
-
-  data.rooms.forEach((room, i) => {
-    const section = document.createElement('section');
-    section.className = 'field';
-    section.innerHTML = `<h3>🚪 Room ${i + 1}: ${room.name} (${room.template || 'Custom'})</h3>`;
-    room.anchors.forEach((a, j) => {
-      const anchor = document.createElement('div');
-      anchor.className = 'field';
-      anchor.innerHTML = `
-        <h4>📍 ${a.name}</h4>
-        <p><strong>Meaning:</strong> ${a.meaning}</p>
-        <p><strong>Memory:</strong> ${a.memory || '—'}</p>
-        <p><strong>Placement:</strong> ${a.placement || 'Unspecified'}</p>
-        <p><strong>Color:</strong> <span style='background:${a.color}; padding:0 10px;'>${a.color}</span></p>
-        ${a.image ? `<img src="${a.image}" style="max-width:100px; margin-top:5px;" />` : ''}
-      `;
-      section.appendChild(anchor);
-    });
-    activityContainer.appendChild(section);
-  });
-
-  const back = document.createElement('button');
-  back.textContent = '← Return to Builder';
-  back.onclick = () => location.reload();
-  activityContainer.appendChild(back);
-}
+// ===== Core Logic: Prefab Anchors, Rendering, Storage =====
 
 const prefabAnchorSets = {
   'Temple of Saturn': [
@@ -130,7 +120,7 @@ window.addAnchorToRoom = function (btn) {
   `;
 
   group.appendChild(anchor);
-}
+};
 
 window.previewImage = function(input) {
   const file = input.files[0];
@@ -144,4 +134,4 @@ window.previewImage = function(input) {
     savePalaceToLocalStorage();
   };
   reader.readAsDataURL(file);
-}
+};
